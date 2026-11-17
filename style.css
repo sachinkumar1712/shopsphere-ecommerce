@@ -1,0 +1,41 @@
+
+/* Global styles */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8fafc;
+    color: #1e293b;
+}
+
+/* Website header */
+
+.site-header {
+    background-color: #0f172a;
+    color: white;
+    text-align: center;
+    padding: 35px 20px;
+}
+
+.site-header h1 {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.site-header p {
+    font-size: 16px;
+    color: #cbd5e1;
+}
+
+/* Button effects */
+
+#exploreBtn {
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+#exploreBtn:hover {
+    transform: translateY(-3px);
+}
