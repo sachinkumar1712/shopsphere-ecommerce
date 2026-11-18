@@ -1,10 +1,12 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <!-- Basic Meta Tags -->
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ShopSphere - Discover fashion, electronics, shoes and accessories.">
 
     <title>ShopSphere | Online Shopping</title>
 
@@ -16,22 +18,25 @@
 </head>
 
 <body>
-    <!-- Navigation Bar -->
+
+    <!-- HEADER / NAVIGATION BAR -->
     <header class="site-header">
-        <nav class="navbar-container">
+        <nav class="navbar-container" aria-label="Main navigation">
+
             <!-- Logo -->
             <a href="#home" class="logo">
                 Shop<span>Sphere</span>
             </a>
 
-            <!-- Desktop Navigation -->
+            <!-- Navigation Links -->
             <ul class="nav-links" id="navLinks">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#products">Products</a></li>
+                <li><a href="#categories">Categories</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
 
-            <!-- Search -->
+            <!-- Search Bar -->
             <form class="search-box" id="searchForm">
                 <input
                     type="search"
@@ -44,17 +49,21 @@
 
             <!-- Wishlist and Cart -->
             <div class="nav-actions">
+
+                <!-- Wishlist -->
                 <button type="button" id="wishlistBtn">
                     ♡ <span class="action-label">Wishlist</span>
                 </button>
 
+                <!-- Shopping Cart -->
                 <button type="button" id="cartBtn">
                     🛒 <span class="action-label">Cart</span>
                     <span id="cartCount">0</span>
                 </button>
+
             </div>
 
-            <!-- Mobile Menu Button -->
+            <!-- Mobile Menu Toggle -->
             <button
                 type="button"
                 class="menu-toggle"
@@ -69,78 +78,122 @@
         </nav>
     </header>
 
-    <!-- Homepage -->
-    
-       
-<!-- Homepage -->
-<main id="home">
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="hero-container">
+    <!-- MAIN WEBSITE CONTENT -->
+    <main id="home">
 
-            <!-- Left Side -->
-            <div class="hero-content">
+        <!-- HERO SECTION -->
+        <section class="hero-section">
+            <div class="hero-container">
 
-                <span class="hero-badge">
-                    🔥 New Collection 2026
-                </span>
+                <!-- Hero Left Content -->
+                <div class="hero-content">
 
-                <h1>
-                    Discover Your
-                    <span>Perfect Style</span>
-                </h1>
+                    <span class="hero-badge">
+                        🔥 New Collection 2026
+                    </span>
 
-                <p>
-                    Explore the latest fashion, electronics,
-                    shoes and accessories at amazing prices.
-                    Shop smarter with ShopSphere!
-                </p>
+                    <h1>
+                        Discover Your
+                        <span>Perfect Style</span>
+                    </h1>
 
-                <div class="hero-buttons">
-                    <a href="#products" class="btn-shop">
-                        Shop Now →
-                    </a>
+                    <p>
+                        Explore the latest fashion, electronics,
+                        shoes and accessories at amazing prices.
+                        Shop smarter with ShopSphere!
+                    </p>
 
-                    <a href="#categories" class="btn-explore">
-                        Explore Categories
-                    </a>
+                    <!-- Hero Buttons -->
+                    <div class="hero-buttons">
+                        <a href="#products" class="btn-shop" id="shopNowBtn">
+                            Shop Now →
+                        </a>
+
+                        <a href="#categories" class="btn-explore">
+                            Explore Categories
+                        </a>
+                    </div>
+
+                </div>
+
+                <!-- Hero Right Image -->
+                <div class="hero-image">
+                    <img
+                        src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=900"
+                        alt="ShopSphere fashion shopping collection"
+                    >
                 </div>
 
             </div>
+        </section>
 
-            <!-- Right Side -->
-            <div class="hero-image">
-                <img
-                    src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=900"
-                    alt="Shopping collection"
-                >
+        <!-- SHOP BY CATEGORY - STEP 4 -->
+        <section id="categories" class="categories-section">
+            <div class="categories-container">
+
+                <!-- Section Heading -->
+                <div class="section-heading">
+                    <span class="section-label">
+                        EXPLORE COLLECTIONS
+                    </span>
+
+                    <h2>Shop by Category</h2>
+
+                    <p>
+                        Discover products from your favorite
+                        categories at amazing prices.
+                    </p>
+                </div>
+
+                <!-- Dynamic Category Cards -->
+                <div class="categories-grid" id="categoriesGrid">
+                    <!-- JavaScript adds category cards -->
+                </div>
+
+                <!-- Selected Category Message -->
+                <p
+                    id="selectedCategory"
+                    class="selected-category"
+                    aria-live="polite"
+                ></p>
+
             </div>
+        </section>
 
+        <!-- FEATURED PRODUCTS - STEP 5 -->
+        <section id="products" class="section-placeholder">
+            <h2>Featured Products</h2>
+
+            <p>
+                Explore our latest and trending products.
+            </p>
+
+            <!-- Product Cards Coming in Step 5 -->
+            <div id="productsGrid"></div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="section-placeholder">
+            <h2>Contact Us</h2>
+
+            <p>
+                Have any questions? We'd love to hear from you!
+            </p>
+
+            <p>Contact form coming soon.</p>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <p>&copy; 2026 ShopSphere. All rights reserved.</p>
+            <p>Built with HTML, CSS, JavaScript and Bootstrap.</p>
         </div>
-    </section>
+    </footer>
 
-    <!-- Products Section -->
-    <section id="products" class="section-placeholder">
-        <h2>Featured Products</h2>
-        <p>Our products are coming soon!</p>
-    </section>
-
-    <!-- Categories Section -->
-    <section id="categories" class="section-placeholder">
-        <h2>Shop by Category</h2>
-        <p>Categories will be added in Step 4.</p>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="section-placeholder">
-        <h2>Contact Us</h2>
-        <p>Contact section coming soon!</p>
-    </section>
-
-</main>
-
-
-    <!-- JavaScript -->
+    <!-- JAVASCRIPT -->
     <script src="script.js"></script>
 
 </body>
