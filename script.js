@@ -58,3 +58,21 @@ document.getElementById("cartBtn").addEventListener("click", function () {
 document.getElementById("wishlistBtn").addEventListener("click", function () {
     alert("Wishlist feature coming soon!");
 });
+
+const shopNowBtn = document.getElementById("shopNowBtn");
+
+shopNowBtn.addEventListener("click", function(event) {
+
+    event.preventDefault();
+
+    const productsSection =
+        document.getElementById("products");
+
+    productsSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+});
+
+console.log("ShopSphere Hero Section Loaded!");

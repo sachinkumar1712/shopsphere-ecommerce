@@ -178,3 +178,170 @@ body {
         display: none;
     }
 }
+
+/* STEP 3 - HERO SECTION */
+html {
+    scroll-behavior: smooth;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    padding: 80px 25px;
+}
+
+.hero-container {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 50px;
+}
+
+/* Left Side */
+
+.hero-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.hero-badge {
+    display: inline-block;
+    background: #dbeafe;
+    color: #2563eb;
+    padding: 8px 16px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.hero-content h1 {
+    font-size: 55px;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+
+.hero-content h1 span {
+    color: #2563eb;
+}
+
+.hero-content p {
+    font-size: 17px;
+    color: #64748b;
+    line-height: 1.8;
+}
+
+/* Hero Buttons */
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-shop,
+.btn-explore {
+    display: inline-block;
+    padding: 14px 25px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.btn-shop {
+    background: #2563eb;
+    color: white;
+}
+
+.btn-shop:hover {
+    background: #1d4ed8;
+    color: white;
+    transform: translateY(-3px);
+}
+
+.btn-explore {
+    border: 2px solid #2563eb;
+    color: #2563eb;
+}
+
+.btn-explore:hover {
+    background: #2563eb;
+    color: white;
+}
+
+/* Right Side Image */
+
+.hero-image {
+    flex: 1;
+    min-width: 0;
+}
+
+.hero-image img {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+/* Product, Category and Contact Sections */
+
+.section-placeholder {
+    padding: 80px 20px;
+    text-align: center;
+    scroll-margin-top: 100px;
+}
+
+/* Tablet Responsive */
+
+@media (max-width: 992px) {
+    .hero-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-content h1 {
+        font-size: 44px;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .hero-image {
+        width: 100%;
+    }
+}
+
+/* Mobile Responsive */
+
+@media (max-width: 600px) {
+    .hero-section {
+        padding: 50px 16px;
+    }
+
+    .hero-content h1 {
+        font-size: 34px;
+    }
+
+    .hero-content p {
+        font-size: 15px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .hero-image img {
+        height: 280px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
