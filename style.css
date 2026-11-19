@@ -16,6 +16,10 @@ body {
     color: #1e293b;
 }
 
+body.modal-open {
+    overflow: hidden;
+}
+
 /* Navbar */
 .site-header {
     background: white;
@@ -35,7 +39,6 @@ body {
     gap: 20px;
 }
 
-/* Logo */
 .logo {
     font-size: 25px;
     font-weight: 800;
@@ -121,7 +124,6 @@ body {
     font-size: 12px;
 }
 
-/* Mobile menu */
 .menu-toggle {
     display: none;
     border: none;
@@ -241,7 +243,6 @@ body {
     margin: auto;
 }
 
-/* Section headings */
 .section-heading {
     text-align: center;
     margin-bottom: 45px;
@@ -268,7 +269,7 @@ body {
     font-size: 16px;
 }
 
-/* Category grid */
+/* Category cards */
 .categories-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -390,21 +391,44 @@ body {
     font-weight: 600;
 }
 
+.filter-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#sortSelect,
+#resetFiltersBtn {
+    min-height: 43px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#sortSelect {
+    background: white;
+    color: #334155;
+    border: 1px solid #cbd5e1;
+}
+
+#sortSelect:focus {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
 #resetFiltersBtn {
     border: 1px solid #2563eb;
     background: white;
     color: #2563eb;
-    padding: 10px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
 }
 
 #resetFiltersBtn:hover {
     background: #eff6ff;
 }
 
-/* Product grid */
+/* Product cards */
 .products-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -501,6 +525,28 @@ body {
     text-decoration: line-through;
 }
 
+/* Product buttons */
+.product-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.view-details {
+    width: 100%;
+    padding: 12px;
+    background: white;
+    color: #2563eb;
+    border: 1px solid #2563eb;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.view-details:hover {
+    background: #eff6ff;
+}
+
 .add-to-cart {
     width: 100%;
     padding: 12px;
@@ -532,6 +578,108 @@ body {
     border-radius: 12px;
     text-align: center;
     color: #64748b;
+}
+
+/* Product modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: rgba(15, 23, 42, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-overlay[hidden] {
+    display: none;
+}
+
+.product-modal {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    max-width: 850px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    z-index: 1;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: #f1f5f9;
+    color: #0f172a;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    background: #e2e8f0;
+}
+
+.modal-image {
+    background: #f1f5f9;
+}
+
+.modal-image img {
+    width: 100%;
+    height: 100%;
+    min-height: 360px;
+    object-fit: cover;
+}
+
+.modal-details {
+    padding: 45px 35px;
+}
+
+.modal-category {
+    display: inline-block;
+    color: #2563eb;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.modal-details h2 {
+    color: #0f172a;
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 15px;
+}
+
+.modal-rating {
+    color: #f59e0b;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.modal-description {
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+.modal-prices {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.modal-prices .current-price {
+    font-size: 26px;
 }
 
 /* Contact */
@@ -687,9 +835,33 @@ body {
         font-size: 28px;
     }
 
-    .products-toolbar {
+    .products-toolbar,
+    .filter-actions {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    #sortSelect,
+    #resetFiltersBtn {
+        width: 100%;
+    }
+
+    .product-modal {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-image img {
+        height: 220px;
+        min-height: 0;
+    }
+
+    .modal-details {
+        padding: 25px 20px;
+    }
+
+    .modal-details h2 {
+        font-size: 23px;
     }
 }
 

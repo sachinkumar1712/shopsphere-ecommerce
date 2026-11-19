@@ -131,9 +131,7 @@
                     </p>
                 </div>
 
-                <div class="categories-grid" id="categoriesGrid">
-                    <!-- Category cards -->
-                </div>
+                <div class="categories-grid" id="categoriesGrid"></div>
 
                 <p
                     id="selectedCategory"
@@ -164,9 +162,19 @@
                         Showing 8 products
                     </p>
 
-                    <button type="button" id="resetFiltersBtn">
-                        Show All Products
-                    </button>
+                    <div class="filter-actions">
+                        <select id="sortSelect" aria-label="Sort products">
+                            <option value="default">Default Sorting</option>
+                            <option value="low">Price: Low to High</option>
+                            <option value="high">Price: High to Low</option>
+                            <option value="rating">Top Rated</option>
+                            <option value="name">Name: A to Z</option>
+                        </select>
+
+                        <button type="button" id="resetFiltersBtn">
+                            Show All Products
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Product cards -->
@@ -193,6 +201,48 @@
         </section>
 
     </main>
+
+    <!-- Product modal -->
+    <div class="modal-overlay" id="productModal" hidden>
+        <div
+            class="product-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modalProductName"
+        >
+            <button
+                type="button"
+                class="modal-close"
+                id="closeModalBtn"
+                aria-label="Close product details"
+            >
+                &times;
+            </button>
+
+            <div class="modal-image">
+                <img id="modalProductImage" src="" alt="">
+            </div>
+
+            <div class="modal-details">
+                <span id="modalProductCategory" class="modal-category"></span>
+
+                <h2 id="modalProductName"></h2>
+
+                <p id="modalProductRating" class="modal-rating"></p>
+
+                <p id="modalProductDescription" class="modal-description"></p>
+
+                <div class="modal-prices">
+                    <span id="modalProductPrice" class="current-price"></span>
+                    <span id="modalProductOldPrice" class="old-price"></span>
+                </div>
+
+                <button type="button" id="modalAddToCartBtn" class="add-to-cart">
+                    Add to Cart
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="site-footer">
