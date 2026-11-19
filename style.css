@@ -1,8 +1,5 @@
 
-/* ==========================================
-   SHOPSPHERE - GLOBAL STYLES
-========================================== */
-
+/* Global styles */
 * {
     margin: 0;
     padding: 0;
@@ -19,11 +16,7 @@ body {
     color: #1e293b;
 }
 
-
-/* ==========================================
-   STEP 2 - HEADER / NAVIGATION BAR
-========================================== */
-
+/* Navbar */
 .site-header {
     background: white;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
@@ -36,16 +29,13 @@ body {
     max-width: 1200px;
     margin: auto;
     padding: 18px 24px;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
 }
 
-
 /* Logo */
-
 .logo {
     font-size: 25px;
     font-weight: 800;
@@ -58,9 +48,7 @@ body {
     color: #0f172a;
 }
 
-
-/* Navigation Links */
-
+/* Navigation links */
 .nav-links {
     list-style: none;
     display: flex;
@@ -81,9 +69,7 @@ body {
     color: #2563eb;
 }
 
-
-/* Search Bar */
-
+/* Search bar */
 .search-box {
     display: flex;
     flex: 1;
@@ -112,9 +98,7 @@ body {
     cursor: pointer;
 }
 
-
-/* Wishlist and Cart */
-
+/* Cart and wishlist */
 .nav-actions {
     display: flex;
     align-items: center;
@@ -137,9 +121,7 @@ body {
     font-size: 12px;
 }
 
-
-/* Mobile Menu */
-
+/* Mobile menu */
 .menu-toggle {
     display: none;
     border: none;
@@ -148,11 +130,7 @@ body {
     cursor: pointer;
 }
 
-
-/* ==========================================
-   STEP 3 - HERO SECTION
-========================================== */
-
+/* Hero section */
 .hero-section {
     background: linear-gradient(135deg, #eff6ff, #dbeafe);
     padding: 80px 25px;
@@ -161,15 +139,11 @@ body {
 .hero-container {
     max-width: 1200px;
     margin: auto;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 50px;
 }
-
-
-/* Hero Left Content */
 
 .hero-content {
     flex: 1;
@@ -203,9 +177,7 @@ body {
     line-height: 1.8;
 }
 
-
-/* Hero Buttons */
-
+/* Hero buttons */
 .hero-buttons {
     display: flex;
     gap: 15px;
@@ -243,9 +215,7 @@ body {
     color: white;
 }
 
-
-/* Hero Right Image */
-
+/* Hero image */
 .hero-image {
     flex: 1;
     min-width: 0;
@@ -259,14 +229,10 @@ body {
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
-
-/* ==========================================
-   STEP 4 - SHOP BY CATEGORY
-========================================== */
-
+/* Categories */
 .categories-section {
     padding: 85px 24px;
-    background: #ffffff;
+    background: white;
     scroll-margin-top: 100px;
 }
 
@@ -275,9 +241,7 @@ body {
     margin: auto;
 }
 
-
-/* Category Section Heading */
-
+/* Section headings */
 .section-heading {
     text-align: center;
     margin-bottom: 45px;
@@ -304,21 +268,17 @@ body {
     font-size: 16px;
 }
 
-
-/* Category Grid */
-
+/* Category grid */
 .categories-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 24px;
 }
 
-
-/* Category Card */
-
 .category-card {
     position: relative;
     height: 300px;
+    width: 100%;
     overflow: hidden;
     border-radius: 16px;
     cursor: pointer;
@@ -326,10 +286,7 @@ body {
     padding: 0;
     background: #e2e8f0;
     text-align: left;
-    width: 100%;
-
-    transition: transform 0.3s ease,
-                box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .category-card:hover {
@@ -342,8 +299,10 @@ body {
     outline-offset: 4px;
 }
 
-
-/* Category Image */
+.category-card.active {
+    outline: 3px solid #2563eb;
+    outline-offset: 3px;
+}
 
 .category-card img {
     width: 100%;
@@ -356,22 +315,15 @@ body {
     transform: scale(1.1);
 }
 
-
-/* Category Overlay */
-
 .category-overlay {
     position: absolute;
     inset: 0;
-
     background: linear-gradient(
         to top,
         rgba(0, 0, 0, 0.8),
         rgba(0, 0, 0, 0.05)
     );
 }
-
-
-/* Category Content */
 
 .category-content {
     position: absolute;
@@ -400,9 +352,6 @@ body {
     font-weight: 600;
 }
 
-
-/* Selected Category */
-
 .selected-category {
     text-align: center;
     margin-top: 25px;
@@ -410,11 +359,182 @@ body {
     color: #2563eb;
 }
 
+.selected-category:empty,
+.product-message:empty {
+    display: none;
+}
 
-/* ==========================================
-   FEATURED PRODUCTS / CONTACT PLACEHOLDERS
-========================================== */
+/* Products */
+.products-section {
+    padding: 85px 24px;
+    background: #f8fafc;
+    scroll-margin-top: 100px;
+}
 
+.products-container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.products-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.products-toolbar p {
+    margin: 0;
+    color: #475569;
+    font-weight: 600;
+}
+
+#resetFiltersBtn {
+    border: 1px solid #2563eb;
+    background: white;
+    color: #2563eb;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#resetFiltersBtn:hover {
+    background: #eff6ff;
+}
+
+/* Product grid */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+.product-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
+
+.product-image {
+    position: relative;
+    height: 230px;
+    background: #f1f5f9;
+    overflow: hidden;
+}
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover .product-image img {
+    transform: scale(1.05);
+}
+
+.product-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #2563eb;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.product-details {
+    padding: 18px;
+}
+
+.product-category {
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.product-name {
+    color: #0f172a;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.product-rating {
+    color: #f59e0b;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.product-rating span {
+    color: #64748b;
+    margin-left: 5px;
+}
+
+.product-price {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.current-price {
+    color: #2563eb;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.old-price {
+    color: #94a3b8;
+    font-size: 14px;
+    text-decoration: line-through;
+}
+
+.add-to-cart {
+    width: 100%;
+    padding: 12px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.add-to-cart:hover {
+    background: #1d4ed8;
+}
+
+.product-message {
+    text-align: center;
+    color: #2563eb;
+    font-weight: 600;
+    margin-top: 25px;
+}
+
+.no-products {
+    grid-column: 1 / -1;
+    padding: 50px 20px;
+    background: white;
+    border: 1px dashed #cbd5e1;
+    border-radius: 12px;
+    text-align: center;
+    color: #64748b;
+}
+
+/* Contact */
 .section-placeholder {
     padding: 80px 20px;
     text-align: center;
@@ -427,11 +547,7 @@ body {
     margin-bottom: 15px;
 }
 
-
-/* ==========================================
-   FOOTER
-========================================== */
-
+/* Footer */
 .site-footer {
     background: #0f172a;
     color: white;
@@ -454,13 +570,8 @@ body {
     margin-bottom: 0;
 }
 
-
-/* ==========================================
-   RESPONSIVE DESIGN - NAVBAR
-========================================== */
-
+/* Responsive navbar */
 @media (max-width: 1100px) {
-
     .navbar-container {
         flex-wrap: wrap;
     }
@@ -489,16 +600,10 @@ body {
         max-width: 100%;
         flex-basis: 100%;
     }
-
 }
 
-
-/* ==========================================
-   RESPONSIVE DESIGN - TABLET
-========================================== */
-
+/* Tablet */
 @media (max-width: 992px) {
-
     .hero-container {
         flex-direction: column;
         text-align: center;
@@ -517,19 +622,14 @@ body {
         width: 100%;
     }
 
-    .categories-grid {
+    .categories-grid,
+    .products-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-
 }
 
-
-/* ==========================================
-   RESPONSIVE DESIGN - MOBILE
-========================================== */
-
+/* Mobile */
 @media (max-width: 600px) {
-
     .navbar-container {
         gap: 12px;
         padding: 14px;
@@ -567,16 +667,19 @@ body {
         height: 280px;
     }
 
-    .categories-section {
+    .categories-section,
+    .products-section {
         padding: 55px 16px;
     }
 
-    .categories-grid {
+    .categories-grid,
+    .products-grid {
         grid-template-columns: 1fr;
         gap: 18px;
     }
 
-    .category-card {
+    .category-card,
+    .product-image {
         height: 260px;
     }
 
@@ -584,24 +687,25 @@ body {
         font-size: 28px;
     }
 
+    .products-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
 
-
-/* ==========================================
-   ACCESSIBILITY
-========================================== */
-
+/* Accessibility */
 @media (prefers-reduced-motion: reduce) {
-
     html {
         scroll-behavior: auto;
     }
 
     .category-card,
     .category-card img,
+    .product-card,
+    .product-image img,
     .btn-shop,
-    .btn-explore {
+    .btn-explore,
+    .add-to-cart {
         transition: none;
     }
-
 }
