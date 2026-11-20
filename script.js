@@ -7,6 +7,7 @@ const navLinks = document.getElementById("navLinks");
 const searchForm = document.getElementById("searchForm");
 const searchInput = document.getElementById("searchInput");
 const cartBtn = document.getElementById("cartBtn");
+const cartCount = document.getElementById("cartCount");
 const wishlistBtn = document.getElementById("wishlistBtn");
 
 // Product elements
@@ -32,6 +33,9 @@ const modalProductPrice = document.getElementById("modalProductPrice");
 const modalProductOldPrice = document.getElementById("modalProductOldPrice");
 const modalAddToCartBtn = document.getElementById("modalAddToCartBtn");
 
+// Cart elements
+const cartNotification = document.getElementById("cartNotification");
+
 // Navbar
 menuToggle.addEventListener("click", function () {
     navLinks.classList.toggle("active");
@@ -50,11 +54,7 @@ navLinks.querySelectorAll("a").forEach(function (link) {
     });
 });
 
-// Cart and wishlist
-cartBtn.addEventListener("click", function () {
-    alert("Cart feature coming soon!");
-});
-
+// Wishlist
 wishlistBtn.addEventListener("click", function () {
     alert("Wishlist feature coming soon!");
 });
@@ -191,12 +191,16 @@ const products = [
     }
 ];
 
-// Filter state
+// Website state
 let searchQuery = "";
 let activeCategory = "All";
 let sortBy = "default";
 let selectedProductId = null;
 let previousFocus = null;
+
+// Shopping cart
+const cart = [];
+let notificationTimer = null;
 
 // Format prices
 function formatPrice(price) {
@@ -213,6 +217,86 @@ function findProduct(productId) {
         return product.id === productId;
     });
 }
+
+// Show notification
+function showNotification(message) {
+    cartNotification.textContent = message;
+    cartNotification.classList.add("show");
+
+    clearTimeout(notificationTimer);
+
+    notificationTimer = setTimeout(function () {
+        cartNotification.classList.remove("show");
+    }, 3000);
+}
+
+// Update cart counter
+function updateCartCount() {
+    const totalItems = cart.reduce(function (total, item) {
+        return total + item.quantity;
+    }, 0);
+
+    cartCount.textContent = totalItems;
+    cartBtn.setAttribute(
+        "aria-label",
+        "View shopping cart with " + totalItems + " items"
+    );
+}
+
+// Add product to cart
+function addToCart(productId) {
+    const product = findProduct(productId);
+
+    if (!product) {
+        return;
+    }
+
+    const existingItem = cart.find(function (item) {
+        return item.id === productId;
+    });
+
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            quantity: 1
+        });
+    }
+
+    updateCartCount();
+    showNotification(product.name + " added to cart!");
+
+    console.log("Shopping Cart:", cart);
+}
+
+// Show cart summary
+cartBtn.addEventListener("click", function () {
+    if (cart.length === 0) {
+        alert("Your shopping cart is empty.");
+        return;
+    }
+
+    let summary = "Your Shopping Cart\n\n";
+    let totalAmount = 0;
+
+    cart.forEach(function (item) {
+        const itemTotal = item.price * item.quantity;
+
+        summary +=
+            item.name + " x " + item.quantity +
+            " = " + formatPrice(itemTotal) + "\n";
+
+        totalAmount += itemTotal;
+    });
+
+    summary += "\nTotal: " + formatPrice(totalAmount);
+
+    alert(summary);
+});
 
 // Show categories
 function displayCategories() {
@@ -443,12 +527,7 @@ productsGrid.addEventListener("click", function (event) {
     const cartButton = event.target.closest(".add-to-cart");
 
     if (cartButton) {
-        const product = findProduct(Number(cartButton.dataset.id));
-
-        if (product) {
-            productMessage.textContent =
-                product.name + " selected! Cart functionality coming soon.";
-        }
+        addToCart(Number(cartButton.dataset.id));
     }
 });
 
@@ -456,16 +535,12 @@ productsGrid.addEventListener("click", function (event) {
 closeModalBtn.addEventListener("click", closeProductModal);
 
 modalAddToCartBtn.addEventListener("click", function () {
-    const product = findProduct(selectedProductId);
-
-    if (!product) {
+    if (selectedProductId === null) {
         return;
     }
 
+    addToCart(selectedProductId);
     closeProductModal();
-
-    productMessage.textContent =
-        product.name + " selected! Cart functionality coming soon.";
 });
 
 // Close when clicking outside
@@ -542,5 +617,6 @@ resetFiltersBtn.addEventListener("click", function () {
 // Load website content
 displayCategories();
 renderProducts();
+updateCartCount();
 
 console.log("ShopSphere Loaded Successfully!");

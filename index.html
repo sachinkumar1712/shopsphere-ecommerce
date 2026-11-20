@@ -53,9 +53,13 @@
                     ♡ <span class="action-label">Wishlist</span>
                 </button>
 
-                <button type="button" id="cartBtn">
+                <button
+                    type="button"
+                    id="cartBtn"
+                    aria-label="View shopping cart"
+                >
                     🛒 <span class="action-label">Cart</span>
-                    <span id="cartCount">0</span>
+                    <span id="cartCount" aria-live="polite">0</span>
                 </button>
             </div>
 
@@ -237,12 +241,24 @@
                     <span id="modalProductOldPrice" class="old-price"></span>
                 </div>
 
-                <button type="button" id="modalAddToCartBtn" class="add-to-cart">
+                <button
+                    type="button"
+                    id="modalAddToCartBtn"
+                    class="add-to-cart"
+                >
                     Add to Cart
                 </button>
             </div>
         </div>
     </div>
+
+    <!-- Cart notification -->
+    <div
+        id="cartNotification"
+        class="cart-notification"
+        role="status"
+        aria-live="polite"
+    ></div>
 
     <!-- Footer -->
     <footer class="site-footer">
