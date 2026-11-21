@@ -172,10 +172,10 @@ let sortBy = "default";
 let selectedProductId = null;
 let previousFocus = null;
 let cartPreviousFocus = null;
-
-// Shopping cart
-const cart = [];
 let notificationTimer = null;
+
+// Local storage
+const CART_STORAGE_KEY = "shopsphere_cart";
 
 // Format prices
 function formatPrice(price) {
@@ -191,6 +191,75 @@ function findProduct(productId) {
     return products.find(function (product) {
         return product.id === productId;
     });
+}
+
+// Load saved cart
+function loadCart() {
+    try {
+        const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+
+        if (!savedCart) {
+            return [];
+        }
+
+        const parsedCart = JSON.parse(savedCart);
+
+        if (!Array.isArray(parsedCart)) {
+            return [];
+        }
+
+        const restoredCart = [];
+
+        parsedCart.forEach(function (item) {
+            if (!item || typeof item !== "object") {
+                return;
+            }
+
+            const product = findProduct(Number(item.id));
+            const quantity = Number(item.quantity);
+
+            if (!product || !Number.isSafeInteger(quantity) || quantity < 1) {
+                return;
+            }
+
+            const existingItem = restoredCart.find(function (cartItem) {
+                return cartItem.id === product.id;
+            });
+
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                restoredCart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.image,
+                    quantity: quantity
+                });
+            }
+        });
+
+        return restoredCart;
+    } catch (error) {
+        console.error("Unable to load saved cart:", error);
+        return [];
+    }
+}
+
+// Shopping cart
+const cart = loadCart();
+
+// Save cart
+function saveCart() {
+    try {
+        localStorage.setItem(
+            CART_STORAGE_KEY,
+            JSON.stringify(cart)
+        );
+    } catch (error) {
+        console.error("Unable to save cart:", error);
+        showNotification("Cart changes could not be saved in this browser.");
+    }
 }
 
 // Navbar
@@ -286,8 +355,10 @@ function addToCart(productId) {
         });
     }
 
+    saveCart();
     updateCartCount();
     renderCart();
+
     showNotification(product.name + " added to cart!");
 }
 
@@ -380,6 +451,7 @@ function changeQuantity(productId, change) {
         cart.splice(index, 1);
     }
 
+    saveCart();
     updateCartCount();
     renderCart();
 }
@@ -398,6 +470,7 @@ function removeFromCart(productId) {
 
     cart.splice(index, 1);
 
+    saveCart();
     updateCartCount();
     renderCart();
 
@@ -761,9 +834,7 @@ document.addEventListener("keydown", function (event) {
 
     if (event.key === "Tab") {
         const focusable = Array.from(
-            cartSidebar.querySelectorAll(
-                "button:not(:disabled)"
-            )
+            cartSidebar.querySelectorAll("button:not(:disabled)")
         );
 
         const first = focusable[0];
