@@ -115,7 +115,8 @@ body.modal-open {
     cursor: pointer;
 }
 
-#cartCount {
+#cartCount,
+#wishlistCount {
     display: inline-block;
     min-width: 22px;
     padding: 3px 6px;
@@ -124,6 +125,10 @@ body.modal-open {
     color: white;
     font-size: 12px;
     text-align: center;
+}
+
+#wishlistCount {
+    background: #e11d48;
 }
 
 .menu-toggle {
@@ -459,6 +464,36 @@ body.modal-open {
     font-weight: 700;
 }
 
+/* Wishlist heart */
+.wishlist-heart {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: white;
+    color: #64748b;
+    font-size: 25px;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+    transition: color 0.2s, transform 0.2s;
+}
+
+.wishlist-heart:hover {
+    color: #e11d48;
+    transform: scale(1.1);
+}
+
+.wishlist-heart.active {
+    color: #e11d48;
+}
+
 .product-details {
     padding: 18px;
 }
@@ -656,7 +691,28 @@ body.modal-open {
     font-size: 26px;
 }
 
-/* Cart sidebar */
+.modal-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal-wishlist-btn {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e11d48;
+    border-radius: 8px;
+    background: white;
+    color: #e11d48;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.modal-wishlist-btn:hover {
+    background: #fff1f2;
+}
+
+/* Shared sidebar overlay */
 .cart-overlay {
     position: fixed;
     inset: 0;
@@ -668,7 +724,9 @@ body.modal-open {
     display: none;
 }
 
-.cart-sidebar {
+/* Cart and wishlist sidebars */
+.cart-sidebar,
+.wishlist-sidebar {
     position: fixed;
     top: 0;
     right: 0;
@@ -686,12 +744,13 @@ body.modal-open {
     transition: transform 0.3s ease, visibility 0.3s;
 }
 
-.cart-sidebar.open {
+.cart-sidebar.open,
+.wishlist-sidebar.open {
     transform: translateX(0);
     visibility: visible;
 }
 
-/* Cart header */
+/* Sidebar header */
 .cart-header {
     display: flex;
     align-items: flex-start;
@@ -725,8 +784,9 @@ body.modal-open {
     cursor: pointer;
 }
 
-/* Cart products */
-.cart-items {
+/* Sidebar products */
+.cart-items,
+.wishlist-items {
     flex: 1;
     overflow-y: auto;
     padding: 20px 25px;
@@ -738,14 +798,16 @@ body.modal-open {
     text-align: center;
 }
 
-.cart-item {
+.cart-item,
+.wishlist-item {
     display: flex;
     gap: 15px;
     padding: 18px 0;
     border-bottom: 1px solid #e2e8f0;
 }
 
-.cart-item-image {
+.cart-item-image,
+.wishlist-item-image {
     width: 85px;
     height: 95px;
     flex-shrink: 0;
@@ -754,19 +816,22 @@ body.modal-open {
     background: #f1f5f9;
 }
 
-.cart-item-details {
+.cart-item-details,
+.wishlist-item-details {
     flex: 1;
     min-width: 0;
 }
 
-.cart-item-details h3 {
+.cart-item-details h3,
+.wishlist-item-details h3 {
     margin-bottom: 7px;
     color: #0f172a;
     font-size: 15px;
     font-weight: 700;
 }
 
-.cart-item-price {
+.cart-item-price,
+.wishlist-item-price {
     margin-bottom: 12px;
     color: #2563eb;
     font-weight: 700;
@@ -802,7 +867,8 @@ body.modal-open {
     font-weight: 700;
 }
 
-.remove-item {
+.remove-item,
+.remove-wishlist-item {
     border: none;
     background: transparent;
     color: #dc2626;
@@ -811,8 +877,28 @@ body.modal-open {
     cursor: pointer;
 }
 
-/* Cart footer */
-.cart-footer {
+/* Wishlist actions */
+.wishlist-item-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.wishlist-cart-btn {
+    padding: 8px 10px;
+    border: none;
+    border-radius: 6px;
+    background: #2563eb;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* Sidebar footers */
+.cart-footer,
+.wishlist-footer {
     padding: 25px;
     border-top: 1px solid #e2e8f0;
     background: white;
@@ -1074,16 +1160,19 @@ body.modal-open {
         font-size: 23px;
     }
 
-    .cart-sidebar {
+    .cart-sidebar,
+    .wishlist-sidebar {
         max-width: 100%;
     }
 
     .cart-header,
-    .cart-footer {
+    .cart-footer,
+    .wishlist-footer {
         padding: 20px;
     }
 
-    .cart-items {
+    .cart-items,
+    .wishlist-items {
         padding: 15px 20px;
     }
 
