@@ -1,7 +1,7 @@
 
 // ShopSphere JavaScript
 
-// Navbar elements
+// NAVBAR ELEMENTS
 const menuToggle = document.getElementById("menuToggle");
 const navLinks = document.getElementById("navLinks");
 const searchForm = document.getElementById("searchForm");
@@ -12,18 +12,18 @@ const wishlistBtn = document.getElementById("wishlistBtn");
 const wishlistCount = document.getElementById("wishlistCount");
 const shopNowBtn = document.getElementById("shopNowBtn");
 
-// Product elements
+// PRODUCT ELEMENTS
 const productsGrid = document.getElementById("productsGrid");
 const productMessage = document.getElementById("productMessage");
 const resultsCount = document.getElementById("resultsCount");
 const resetFiltersBtn = document.getElementById("resetFiltersBtn");
 const sortSelect = document.getElementById("sortSelect");
 
-// Category elements
+// CATEGORY ELEMENTS
 const categoriesGrid = document.getElementById("categoriesGrid");
 const selectedCategory = document.getElementById("selectedCategory");
 
-// Product modal elements
+// PRODUCT MODAL ELEMENTS
 const productModal = document.getElementById("productModal");
 const closeModalBtn = document.getElementById("closeModalBtn");
 const modalProductImage = document.getElementById("modalProductImage");
@@ -36,12 +36,12 @@ const modalProductOldPrice = document.getElementById("modalProductOldPrice");
 const modalAddToCartBtn = document.getElementById("modalAddToCartBtn");
 const modalWishlistBtn = document.getElementById("modalWishlistBtn");
 
-// Sidebar elements
+// SIDEBAR ELEMENTS
 const sidebarOverlay = document.getElementById("sidebarOverlay");
 const cartSidebar = document.getElementById("cartSidebar");
 const wishlistSidebar = document.getElementById("wishlistSidebar");
 
-// Cart elements
+// CART ELEMENTS
 const closeCartBtn = document.getElementById("closeCartBtn");
 const cartItems = document.getElementById("cartItems");
 const cartItemCount = document.getElementById("cartItemCount");
@@ -49,16 +49,25 @@ const cartSubtotal = document.getElementById("cartSubtotal");
 const checkoutBtn = document.getElementById("checkoutBtn");
 const continueShoppingBtn = document.getElementById("continueShoppingBtn");
 
-// Wishlist elements
+// WISHLIST ELEMENTS
 const closeWishlistBtn = document.getElementById("closeWishlistBtn");
 const wishlistItems = document.getElementById("wishlistItems");
 const wishlistItemCount = document.getElementById("wishlistItemCount");
 const continueWishlistBtn = document.getElementById("continueWishlistBtn");
 
-// Notification
+// NOTIFICATION
 const cartNotification = document.getElementById("cartNotification");
 
-// Category data
+// CONTACT FORM ELEMENTS
+const contactForm = document.getElementById("contactForm");
+const contactName = document.getElementById("contactName");
+const contactEmail = document.getElementById("contactEmail");
+const contactSubject = document.getElementById("contactSubject");
+const contactMessage = document.getElementById("contactMessage");
+const contactFormStatus = document.getElementById("contactFormStatus");
+const messageCount = document.getElementById("messageCount");
+
+// CATEGORY DATA
 const categories = [
     {
         id: 1,
@@ -86,7 +95,7 @@ const categories = [
     }
 ];
 
-// Product data
+// PRODUCT DATA
 const products = [
     {
         id: 1,
@@ -178,11 +187,11 @@ const products = [
     }
 ];
 
-// Storage keys
+// STORAGE KEYS
 const CART_STORAGE_KEY = "shopsphere_cart";
 const WISHLIST_STORAGE_KEY = "shopsphere_wishlist";
 
-// Website state
+// WEBSITE STATE
 let searchQuery = "";
 let activeCategory = "All";
 let sortBy = "default";
@@ -191,7 +200,7 @@ let activeSidebar = null;
 let previousFocus = null;
 let notificationTimer = null;
 
-// Format prices
+// FORMAT PRICES
 function formatPrice(price) {
     return new Intl.NumberFormat("en-IN", {
         style: "currency",
@@ -200,14 +209,14 @@ function formatPrice(price) {
     }).format(price);
 }
 
-// Find product
+// FIND PRODUCT
 function findProduct(productId) {
     return products.find(function (product) {
         return product.id === productId;
     });
 }
 
-// Load saved cart
+// LOAD SAVED CART
 function loadCart() {
     try {
         const savedCart = JSON.parse(
@@ -256,7 +265,7 @@ function loadCart() {
     }
 }
 
-// Load saved wishlist
+// LOAD SAVED WISHLIST
 function loadWishlist() {
     try {
         const savedWishlist = JSON.parse(
@@ -282,11 +291,11 @@ function loadWishlist() {
     }
 }
 
-// Shopping cart and wishlist
+// SHOPPING CART AND WISHLIST
 const cart = loadCart();
 const wishlist = loadWishlist();
 
-// Save cart
+// SAVE CART
 function saveCart() {
     try {
         localStorage.setItem(
@@ -299,7 +308,7 @@ function saveCart() {
     }
 }
 
-// Save wishlist
+// SAVE WISHLIST
 function saveWishlist() {
     try {
         localStorage.setItem(
@@ -312,7 +321,7 @@ function saveWishlist() {
     }
 }
 
-// Navbar
+// NAVBAR
 menuToggle.addEventListener("click", function () {
     navLinks.classList.toggle("active");
 
@@ -330,7 +339,7 @@ navLinks.querySelectorAll("a").forEach(function (link) {
     });
 });
 
-// Hero button
+// HERO BUTTON
 shopNowBtn.addEventListener("click", function (event) {
     event.preventDefault();
 
@@ -340,7 +349,7 @@ shopNowBtn.addEventListener("click", function (event) {
     });
 });
 
-// Notification
+// NOTIFICATION
 function showNotification(message) {
     cartNotification.textContent = message;
     cartNotification.classList.add("show");
@@ -352,7 +361,7 @@ function showNotification(message) {
     }, 3000);
 }
 
-// Update cart counter
+// UPDATE CART COUNTER
 function updateCartCount() {
     const totalItems = cart.reduce(function (total, item) {
         return total + item.quantity;
@@ -369,7 +378,7 @@ function updateCartCount() {
         totalItems + (totalItems === 1 ? " item" : " items") + " in your cart";
 }
 
-// Update wishlist counter
+// UPDATE WISHLIST COUNTER
 function updateWishlistCount() {
     wishlistCount.textContent = wishlist.length;
 
@@ -383,14 +392,14 @@ function updateWishlistCount() {
         (wishlist.length === 1 ? " saved product" : " saved products");
 }
 
-// Calculate subtotal
+// CALCULATE SUBTOTAL
 function calculateSubtotal() {
     return cart.reduce(function (total, item) {
         return total + item.price * item.quantity;
     }, 0);
 }
 
-// Add to cart
+// ADD TO CART
 function addToCart(productId) {
     const product = findProduct(productId);
 
@@ -421,7 +430,7 @@ function addToCart(productId) {
     showNotification(product.name + " added to cart!");
 }
 
-// Toggle wishlist
+// TOGGLE WISHLIST
 function toggleWishlist(productId) {
     const product = findProduct(productId);
 
@@ -445,7 +454,7 @@ function toggleWishlist(productId) {
     updateWishlistButtons();
 }
 
-// Update wishlist buttons
+// UPDATE WISHLIST BUTTONS
 function updateWishlistButtons() {
     document.querySelectorAll(".wishlist-heart").forEach(function (button) {
         const productId = Number(button.dataset.id);
@@ -471,7 +480,7 @@ function updateWishlistButtons() {
     }
 }
 
-// Render cart
+// RENDER CART
 function renderCart() {
     cartItems.innerHTML = "";
 
@@ -543,7 +552,7 @@ function renderCart() {
     checkoutBtn.disabled = cart.length === 0;
 }
 
-// Render wishlist
+// RENDER WISHLIST
 function renderWishlist() {
     wishlistItems.innerHTML = "";
 
@@ -606,7 +615,7 @@ function renderWishlist() {
     });
 }
 
-// Change cart quantity
+// CHANGE CART QUANTITY
 function changeQuantity(productId, change) {
     const item = cart.find(function (product) {
         return product.id === productId;
@@ -627,7 +636,7 @@ function changeQuantity(productId, change) {
     renderCart();
 }
 
-// Remove cart product
+// REMOVE CART PRODUCT
 function removeFromCart(productId) {
     const index = cart.findIndex(function (item) {
         return item.id === productId;
@@ -648,7 +657,7 @@ function removeFromCart(productId) {
     showNotification(removedItem.name + " removed from cart.");
 }
 
-// Open sidebar
+// OPEN SIDEBAR
 function openSidebar(type) {
     previousFocus = document.activeElement;
     activeSidebar = type;
@@ -675,7 +684,7 @@ function openSidebar(type) {
     sidebar.querySelector(".cart-close").focus();
 }
 
-// Close sidebar
+// CLOSE SIDEBAR
 function closeSidebar() {
     if (!activeSidebar) {
         return;
@@ -705,7 +714,7 @@ function closeSidebar() {
     previousFocus = null;
 }
 
-// Sidebar buttons
+// SIDEBAR BUTTONS
 cartBtn.addEventListener("click", function () {
     openSidebar("cart");
 });
@@ -720,7 +729,7 @@ continueShoppingBtn.addEventListener("click", closeSidebar);
 continueWishlistBtn.addEventListener("click", closeSidebar);
 sidebarOverlay.addEventListener("click", closeSidebar);
 
-// Cart item buttons
+// CART ITEM BUTTONS
 cartItems.addEventListener("click", function (event) {
     const increaseBtn = event.target.closest(".increase-quantity");
     const decreaseBtn = event.target.closest(".decrease-quantity");
@@ -741,7 +750,7 @@ cartItems.addEventListener("click", function (event) {
     }
 });
 
-// Wishlist item buttons
+// WISHLIST ITEM BUTTONS
 wishlistItems.addEventListener("click", function (event) {
     const cartButton = event.target.closest(".wishlist-cart-btn");
     const removeButton = event.target.closest(".remove-wishlist-item");
@@ -756,7 +765,7 @@ wishlistItems.addEventListener("click", function (event) {
     }
 });
 
-// Checkout placeholder
+// CHECKOUT PLACEHOLDER
 checkoutBtn.addEventListener("click", function () {
     if (cart.length === 0) {
         return;
@@ -765,7 +774,7 @@ checkoutBtn.addEventListener("click", function () {
     showNotification("Checkout feature coming soon!");
 });
 
-// Show categories
+// DISPLAY CATEGORIES
 function displayCategories() {
     categoriesGrid.innerHTML = "";
 
@@ -816,7 +825,7 @@ function displayCategories() {
     });
 }
 
-// Filter and sort products
+// FILTER AND SORT PRODUCTS
 function getFilteredProducts() {
     const filteredProducts = products.filter(function (product) {
         const matchesCategory =
@@ -855,7 +864,7 @@ function getFilteredProducts() {
     return sortedProducts;
 }
 
-// Show products
+// RENDER PRODUCTS
 function renderProducts() {
     const filteredProducts = getFilteredProducts();
 
@@ -954,7 +963,7 @@ function renderProducts() {
     });
 }
 
-// Open product modal
+// OPEN PRODUCT MODAL
 function openProductModal(productId) {
     const product = findProduct(productId);
 
@@ -982,7 +991,7 @@ function openProductModal(productId) {
     closeModalBtn.focus();
 }
 
-// Close product modal
+// CLOSE PRODUCT MODAL
 function closeProductModal() {
     productModal.hidden = true;
     document.body.classList.remove("modal-open");
@@ -996,7 +1005,7 @@ function closeProductModal() {
     previousFocus = null;
 }
 
-// Product buttons
+// PRODUCT BUTTONS
 productsGrid.addEventListener("click", function (event) {
     const wishlistButton = event.target.closest(".wishlist-heart");
     const detailsButton = event.target.closest(".view-details");
@@ -1017,7 +1026,7 @@ productsGrid.addEventListener("click", function (event) {
     }
 });
 
-// Modal buttons
+// MODAL BUTTONS
 closeModalBtn.addEventListener("click", closeProductModal);
 
 modalAddToCartBtn.addEventListener("click", function () {
@@ -1041,7 +1050,7 @@ productModal.addEventListener("click", function (event) {
     }
 });
 
-// Keyboard controls
+// KEYBOARD CONTROLS
 document.addEventListener("keydown", function (event) {
     if (activeSidebar) {
         const sidebar = activeSidebar === "cart"
@@ -1072,7 +1081,7 @@ document.addEventListener("keydown", function (event) {
     }
 });
 
-// Keep keyboard focus inside dialog
+// FOCUS TRAP
 function trapFocus(event, container) {
     const focusable = Array.from(
         container.querySelectorAll(
@@ -1098,7 +1107,7 @@ function trapFocus(event, container) {
     }
 }
 
-// Search products
+// SEARCH PRODUCTS
 searchForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
@@ -1112,13 +1121,13 @@ searchForm.addEventListener("submit", function (event) {
     });
 });
 
-// Sort products
+// SORT PRODUCTS
 sortSelect.addEventListener("change", function () {
     sortBy = sortSelect.value;
     renderProducts();
 });
 
-// Reset filters
+// RESET FILTERS
 resetFiltersBtn.addEventListener("click", function () {
     searchQuery = "";
     activeCategory = "All";
@@ -1132,7 +1141,225 @@ resetFiltersBtn.addEventListener("click", function () {
     renderProducts();
 });
 
-// Load website
+// CONTACT FORM VALIDATION
+
+// Show field error
+function showFieldError(input, errorId, message) {
+    const errorElement = document.getElementById(errorId);
+
+    input.classList.add("is-invalid");
+    input.classList.remove("is-valid");
+    input.setAttribute("aria-invalid", "true");
+
+    errorElement.textContent = message;
+
+    return false;
+}
+
+// Show valid field
+function showFieldSuccess(input, errorId) {
+    const errorElement = document.getElementById(errorId);
+
+    input.classList.remove("is-invalid");
+    input.classList.add("is-valid");
+    input.setAttribute("aria-invalid", "false");
+
+    errorElement.textContent = "";
+
+    return true;
+}
+
+// Validate full name
+function validateName() {
+    const name = contactName.value.trim();
+
+    if (name === "") {
+        return showFieldError(
+            contactName,
+            "nameError",
+            "Please enter your full name."
+        );
+    }
+
+    if (name.length < 2) {
+        return showFieldError(
+            contactName,
+            "nameError",
+            "Name must contain at least 2 characters."
+        );
+    }
+
+    return showFieldSuccess(contactName, "nameError");
+}
+
+// Validate email
+function validateEmail() {
+    const email = contactEmail.value.trim();
+
+    if (email === "") {
+        return showFieldError(
+            contactEmail,
+            "emailError",
+            "Please enter your email address."
+        );
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email)) {
+        return showFieldError(
+            contactEmail,
+            "emailError",
+            "Please enter a valid email address."
+        );
+    }
+
+    return showFieldSuccess(contactEmail, "emailError");
+}
+
+// Validate subject
+function validateSubject() {
+    const subject = contactSubject.value;
+
+    if (subject === "") {
+        return showFieldError(
+            contactSubject,
+            "subjectError",
+            "Please select a subject."
+        );
+    }
+
+    return showFieldSuccess(contactSubject, "subjectError");
+}
+
+// Validate message
+function validateMessage() {
+    const message = contactMessage.value.trim();
+
+    if (message === "") {
+        return showFieldError(
+            contactMessage,
+            "messageError",
+            "Please write your message."
+        );
+    }
+
+    if (message.length < 10) {
+        return showFieldError(
+            contactMessage,
+            "messageError",
+            "Message must contain at least 10 characters."
+        );
+    }
+
+    return showFieldSuccess(contactMessage, "messageError");
+}
+
+// Update message character counter
+function updateMessageCount() {
+    const length = contactMessage.value.length;
+
+    messageCount.textContent = length + " / 1000 characters";
+
+    messageCount.classList.toggle("near-limit", length >= 900 && length < 1000);
+    messageCount.classList.toggle("at-limit", length >= 1000);
+}
+
+// Clear form status
+function clearContactStatus() {
+    contactFormStatus.textContent = "";
+    contactFormStatus.classList.remove("success", "error");
+}
+
+// Validate on field interaction
+contactName.addEventListener("blur", validateName);
+contactEmail.addEventListener("blur", validateEmail);
+contactSubject.addEventListener("change", validateSubject);
+contactMessage.addEventListener("blur", validateMessage);
+
+// Revalidate fields after an error
+contactName.addEventListener("input", function () {
+    clearContactStatus();
+
+    if (contactName.classList.contains("is-invalid")) {
+        validateName();
+    }
+});
+
+contactEmail.addEventListener("input", function () {
+    clearContactStatus();
+
+    if (contactEmail.classList.contains("is-invalid")) {
+        validateEmail();
+    }
+});
+
+contactSubject.addEventListener("change", clearContactStatus);
+
+contactMessage.addEventListener("input", function () {
+    updateMessageCount();
+    clearContactStatus();
+
+    if (contactMessage.classList.contains("is-invalid")) {
+        validateMessage();
+    }
+});
+
+// Submit contact form
+contactForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    clearContactStatus();
+
+    const isNameValid = validateName();
+    const isEmailValid = validateEmail();
+    const isSubjectValid = validateSubject();
+    const isMessageValid = validateMessage();
+
+    const isFormValid =
+        isNameValid &&
+        isEmailValid &&
+        isSubjectValid &&
+        isMessageValid;
+
+    if (!isFormValid) {
+        contactFormStatus.textContent =
+            "Please correct the highlighted fields and try again.";
+
+        contactFormStatus.classList.add("error");
+
+        const firstInvalidField = contactForm.querySelector(".is-invalid");
+
+        if (firstInvalidField) {
+            firstInvalidField.focus();
+        }
+
+        return;
+    }
+
+    // Frontend-only success: no network request is made
+    contactForm.reset();
+
+    const formFields = contactForm.querySelectorAll(
+        "input, select, textarea"
+    );
+
+    formFields.forEach(function (field) {
+        field.classList.remove("is-valid", "is-invalid");
+        field.removeAttribute("aria-invalid");
+    });
+
+    updateMessageCount();
+
+    contactFormStatus.textContent =
+        "Your message passed validation! This is a demo, so it has not been sent.";
+
+    contactFormStatus.classList.add("success");
+
+    showNotification("Contact form validation successful!");
+});
+
+// INITIALIZE WEBSITE
 displayCategories();
 renderProducts();
 
@@ -1141,5 +1368,7 @@ renderCart();
 
 updateWishlistCount();
 renderWishlist();
+
+updateMessageCount();
 
 console.log("ShopSphere Loaded Successfully!");
