@@ -999,6 +999,253 @@
         </div>
     </div>
 
+    <!--  PRODUCT REVIEWS AND RATINGS -->
+    <section class="reviews-section" id="reviewsSection">
+
+                <div class="reviews-heading">
+                    <span class="section-label">CUSTOMER FEEDBACK</span>
+                    <h2>Customer Reviews & Ratings</h2>
+                    <p>Share your experience with this product.</p>
+                </div>
+
+                <!-- Rating Summary -->
+                <div class="rating-summary">
+
+                    <div class="rating-overview">
+
+                        <h3 id="averageRating">0.0</h3>
+
+                        <div id="averageStars" class="average-stars">
+                            ☆☆☆☆☆
+                        </div>
+
+                        <p id="totalReviews">0 reviews</p>
+
+                    </div>
+
+                    <div
+                        class="rating-distribution"
+                        id="ratingDistribution"
+                    ></div>
+
+                </div>
+
+                <!-- Review Form -->
+                <div class="review-form-card">
+
+                    <h3>Write a Review</h3>
+
+                    <p>
+                        Share your opinion about this product.
+                        Reviews are stored locally in your browser.
+                    </p>
+
+                    <form id="reviewForm" novalidate>
+
+                        <!-- Star Rating -->
+                        <div class="form-group">
+
+                            <label id="ratingLabel">
+                                Your Rating *
+                            </label>
+
+                            <div
+                                class="star-input"
+                                id="starInput"
+                                role="group"
+                                aria-labelledby="ratingLabel"
+                            >
+
+                                <button
+                                    type="button"
+                                    data-rating="1"
+                                    aria-label="1 star"
+                                    aria-pressed="false"
+                                >☆</button>
+
+                                <button
+                                    type="button"
+                                    data-rating="2"
+                                    aria-label="2 stars"
+                                    aria-pressed="false"
+                                >☆</button>
+
+                                <button
+                                    type="button"
+                                    data-rating="3"
+                                    aria-label="3 stars"
+                                    aria-pressed="false"
+                                >☆</button>
+
+                                <button
+                                    type="button"
+                                    data-rating="4"
+                                    aria-label="4 stars"
+                                    aria-pressed="false"
+                                >☆</button>
+
+                                <button
+                                    type="button"
+                                    data-rating="5"
+                                    aria-label="5 stars"
+                                    aria-pressed="false"
+                                >☆</button>
+
+                            </div>
+
+                            <p id="ratingText" class="rating-text">
+                                Select a rating
+                            </p>
+
+                            <small
+                                class="form-error"
+                                id="ratingError"
+                            ></small>
+
+                        </div>
+
+                        <!-- Customer Name -->
+                        <div class="form-group">
+
+                            <label for="reviewName">
+                                Your Name *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="reviewName"
+                                placeholder="Enter your name"
+                                minlength="2"
+                                maxlength="50"
+                                required
+                            >
+
+                            <small
+                                class="form-error"
+                                id="reviewNameError"
+                            ></small>
+
+                        </div>
+
+                        <!-- Review Title -->
+                        <div class="form-group">
+
+                            <label for="reviewTitle">
+                                Review Title *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="reviewTitle"
+                                placeholder="Summarize your experience"
+                                minlength="3"
+                                maxlength="100"
+                                required
+                            >
+
+                            <small
+                                class="form-error"
+                                id="reviewTitleError"
+                            ></small>
+
+                        </div>
+
+                        <!-- Review Message -->
+                        <div class="form-group">
+
+                            <label for="reviewMessage">
+                                Your Review *
+                            </label>
+
+                            <textarea
+                                id="reviewMessage"
+                                rows="5"
+                                placeholder="Tell us about your experience..."
+                                minlength="10"
+                                maxlength="500"
+                                required
+                            ></textarea>
+
+                            <div class="review-character-count">
+                                <span id="reviewCharacterCount">0</span>/500
+                            </div>
+
+                            <small
+                                class="form-error"
+                                id="reviewMessageError"
+                            ></small>
+
+                        </div>
+
+                        <!-- Review Form Status -->
+                        <p
+                            class="form-status"
+                            id="reviewFormStatus"
+                            role="status"
+                            aria-live="polite"
+                        ></p>
+
+                        <button
+                            type="submit"
+                            class="submit-review-btn"
+                        >
+                            Submit Review
+                        </button>
+
+                    </form>
+
+                </div>
+
+                <!-- Customer Reviews List -->
+                <div class="reviews-list-section">
+
+                    <div class="reviews-toolbar">
+
+                        <div>
+                            <h3>Customer Reviews</h3>
+                            <p id="reviewResultsCount">
+                                0 reviews found
+                            </p>
+                        </div>
+
+                        <div class="review-filter-actions">
+
+                            <select
+                                id="reviewRatingFilter"
+                                aria-label="Filter reviews by rating"
+                            >
+                                <option value="all">All Ratings</option>
+                                <option value="5">5 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="3">3 Stars</option>
+                                <option value="2">2 Stars</option>
+                                <option value="1">1 Star</option>
+                            </select>
+
+                            <select
+                                id="reviewSort"
+                                aria-label="Sort reviews"
+                            >
+                                <option value="newest">Newest First</option>
+                                <option value="oldest">Oldest First</option>
+                                <option value="highest">Highest Rating</option>
+                                <option value="lowest">Lowest Rating</option>
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="reviews-list"
+                        id="reviewsList"
+                        aria-live="polite"
+                    ></div>
+
+                </div>
+
+    </section>
+
     <!-- SIDEBAR OVERLAY -->
     <div class="cart-overlay" id="sidebarOverlay" hidden></div>
 

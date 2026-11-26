@@ -2013,6 +2013,779 @@ cancelOrderBtn.addEventListener("click", function () {
     }
 });
 
+//  PRODUCT REVIEWS AND RATINGS
+
+// REVIEW DOM ELEMENTS
+const reviewForm = document.getElementById("reviewForm");
+const reviewName = document.getElementById("reviewName");
+const reviewTitle = document.getElementById("reviewTitle");
+const reviewMessage = document.getElementById("reviewMessage");
+
+const starInput = document.getElementById("starInput");
+const ratingText = document.getElementById("ratingText");
+const ratingError = document.getElementById("ratingError");
+
+const averageRating = document.getElementById("averageRating");
+const averageStars = document.getElementById("averageStars");
+const totalReviews = document.getElementById("totalReviews");
+const ratingDistribution = document.getElementById("ratingDistribution");
+
+const reviewCharacterCount = document.getElementById(
+    "reviewCharacterCount"
+);
+
+const reviewFormStatus = document.getElementById(
+    "reviewFormStatus"
+);
+
+const reviewRatingFilter = document.getElementById(
+    "reviewRatingFilter"
+);
+
+const reviewSort = document.getElementById("reviewSort");
+const reviewsList = document.getElementById("reviewsList");
+
+const reviewResultsCount = document.getElementById(
+    "reviewResultsCount"
+);
+
+// REVIEW STORAGE KEY
+const REVIEWS_STORAGE_KEY = "shopsphere_reviews";
+
+// REVIEW STATE
+let selectedRating = 0;
+
+// RATING LABELS
+const ratingLabels = {
+    0: "Select a rating",
+    1: "Poor",
+    2: "Fair",
+    3: "Good",
+    4: "Very Good",
+    5: "Excellent"
+};
+
+// LOAD SAVED REVIEWS
+function loadReviews() {
+    return readStoredArray(REVIEWS_STORAGE_KEY).filter(
+        function (review) {
+            return (
+                review &&
+                typeof review === "object" &&
+                typeof review.id === "string" &&
+                Boolean(findProduct(review.productId)) &&
+                Number.isInteger(review.rating) &&
+                review.rating >= 1 &&
+                review.rating <= 5 &&
+                typeof review.name === "string" &&
+                typeof review.title === "string" &&
+                typeof review.message === "string" &&
+                typeof review.createdAt === "string" &&
+                !Number.isNaN(
+                    new Date(review.createdAt).getTime()
+                )
+            );
+        }
+    );
+}
+
+// REVIEW APPLICATION DATA
+const reviews = loadReviews();
+
+// SAVE REVIEWS
+function saveReviews() {
+    return saveToStorage(REVIEWS_STORAGE_KEY, reviews);
+}
+
+// GET PRODUCT REVIEWS
+function getProductReviews(productId) {
+    return reviews.filter(function (review) {
+        return review.productId === productId;
+    });
+}
+
+// CALCULATE AVERAGE RATING
+function getAverageRating(productId) {
+    const productReviews = getProductReviews(productId);
+
+    if (productReviews.length === 0) {
+        return 0;
+    }
+
+    const totalRating = productReviews.reduce(
+        function (sum, review) {
+            return sum + review.rating;
+        },
+        0
+    );
+
+    return totalRating / productReviews.length;
+}
+
+// GET PRODUCT DISPLAY RATING
+function getDisplayRating(product) {
+    const productReviews = getProductReviews(product.id);
+
+    if (productReviews.length === 0) {
+        return product.rating;
+    }
+
+    return getAverageRating(product.id);
+}
+
+// GENERATE REVIEW STARS
+function generateReviewStars(rating) {
+    const roundedRating = Math.max(
+        0,
+        Math.min(5, Math.round(rating))
+    );
+
+    return (
+        "★".repeat(roundedRating) +
+        "☆".repeat(5 - roundedRating)
+    );
+}
+
+// UPDATE INTERACTIVE STAR INPUT
+function updateStarInput(previewRating = selectedRating) {
+    const starButtons = starInput.querySelectorAll(
+        "button[data-rating]"
+    );
+
+    starButtons.forEach(function (button) {
+        const rating = Number(button.dataset.rating);
+
+        const isActive = rating <= previewRating;
+
+        button.classList.toggle("active", isActive);
+
+        button.textContent = isActive ? "★" : "☆";
+
+        button.setAttribute(
+            "aria-pressed",
+            String(rating === selectedRating)
+        );
+    });
+
+    ratingText.textContent = ratingLabels[previewRating];
+}
+
+// STAR CLICK EVENT
+starInput.addEventListener("click", function (event) {
+    const button = event.target.closest("button[data-rating]");
+
+    if (!button) {
+        return;
+    }
+
+    selectedRating = Number(button.dataset.rating);
+
+    updateStarInput();
+
+    ratingError.textContent = "";
+});
+
+// STAR HOVER EVENT
+starInput.addEventListener("mouseover", function (event) {
+    const button = event.target.closest("button[data-rating]");
+
+    if (!button) {
+        return;
+    }
+
+    const previewRating = Number(button.dataset.rating);
+
+    updateStarInput(previewRating);
+});
+
+// RESTORE SELECTED RATING
+starInput.addEventListener("mouseleave", function () {
+    updateStarInput();
+});
+
+// REVIEW CHARACTER COUNTER
+function updateReviewCharacterCount() {
+    reviewCharacterCount.textContent =
+        reviewMessage.value.length;
+}
+
+// CHARACTER COUNTER EVENT
+reviewMessage.addEventListener(
+    "input",
+    updateReviewCharacterCount
+);
+
+// CLEAR REVIEW FIELD ERROR
+function clearReviewFieldError(input, errorId) {
+    input.removeAttribute("aria-invalid");
+
+    document.getElementById(errorId).textContent = "";
+}
+
+// SHOW REVIEW FIELD ERROR
+function showReviewFieldError(input, errorId, message) {
+    input.setAttribute("aria-invalid", "true");
+
+    document.getElementById(errorId).textContent = message;
+}
+
+// REVIEW FORM STATUS
+function setReviewStatus(message, type) {
+    reviewFormStatus.textContent = message;
+
+    reviewFormStatus.style.color =
+        type === "error" ? "#dc2626" : "#15803d";
+}
+
+// RESET REVIEW FORM
+function resetReviewForm() {
+    reviewForm.reset();
+
+    selectedRating = 0;
+
+    updateStarInput();
+
+    updateReviewCharacterCount();
+
+    ratingError.textContent = "";
+
+    clearReviewFieldError(
+        reviewName,
+        "reviewNameError"
+    );
+
+    clearReviewFieldError(
+        reviewTitle,
+        "reviewTitleError"
+    );
+
+    clearReviewFieldError(
+        reviewMessage,
+        "reviewMessageError"
+    );
+
+    reviewFormStatus.textContent = "";
+}
+
+// VALIDATE REVIEW FORM
+function validateReviewForm() {
+    let isValid = true;
+
+    const name = reviewName.value.trim();
+    const title = reviewTitle.value.trim();
+    const message = reviewMessage.value.trim();
+
+    ratingError.textContent = "";
+
+    clearReviewFieldError(
+        reviewName,
+        "reviewNameError"
+    );
+
+    clearReviewFieldError(
+        reviewTitle,
+        "reviewTitleError"
+    );
+
+    clearReviewFieldError(
+        reviewMessage,
+        "reviewMessageError"
+    );
+
+    // Validate Rating
+    if (
+        !Number.isInteger(selectedRating) ||
+        selectedRating < 1 ||
+        selectedRating > 5
+    ) {
+        ratingError.textContent =
+            "Please select a rating.";
+
+        isValid = false;
+    }
+
+    // Validate Name
+    if (name.length < 2 || name.length > 50) {
+        showReviewFieldError(
+            reviewName,
+            "reviewNameError",
+            "Enter a name between 2 and 50 characters."
+        );
+
+        isValid = false;
+    }
+
+    // Validate Title
+    if (title.length < 3 || title.length > 100) {
+        showReviewFieldError(
+            reviewTitle,
+            "reviewTitleError",
+            "Enter a title between 3 and 100 characters."
+        );
+
+        isValid = false;
+    }
+
+    // Validate Message
+    if (message.length < 10 || message.length > 500) {
+        showReviewFieldError(
+            reviewMessage,
+            "reviewMessageError",
+            "Enter a review between 10 and 500 characters."
+        );
+
+        isValid = false;
+    }
+
+    return isValid;
+}
+
+// CALCULATE RATING DISTRIBUTION
+function calculateRatingDistribution(productId) {
+    const productReviews = getProductReviews(productId);
+
+    const distribution = {
+        5: 0,
+        4: 0,
+        3: 0,
+        2: 0,
+        1: 0
+    };
+
+    productReviews.forEach(function (review) {
+        distribution[review.rating] += 1;
+    });
+
+    return distribution;
+}
+
+// RENDER RATING SUMMARY
+function renderRatingSummary(productId) {
+    const product = findProduct(productId);
+
+    if (!product) {
+        return;
+    }
+
+    const productReviews = getProductReviews(productId);
+
+    const total = productReviews.length;
+
+    const average = getAverageRating(productId);
+
+    const distribution = calculateRatingDistribution(
+        productId
+    );
+
+    averageRating.textContent =
+        total === 0 ? "—" : average.toFixed(1);
+
+    averageStars.textContent = generateReviewStars(average);
+
+    totalReviews.textContent =
+        total + (total === 1 ? " review" : " reviews");
+
+    ratingDistribution.innerHTML = "";
+
+    // Display Rating Bars
+    for (let rating = 5; rating >= 1; rating--) {
+        const count = distribution[rating];
+
+        const percentage =
+            total === 0
+                ? 0
+                : Math.round((count / total) * 100);
+
+        const row = document.createElement("div");
+
+        row.className = "rating-bar-row";
+
+        row.innerHTML = `
+            <span class="rating-bar-label">
+                ${rating} ★
+            </span>
+
+            <div
+                class="rating-bar-track"
+                role="progressbar"
+                aria-label="${rating} star reviews"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="${percentage}"
+            >
+                <div
+                    class="rating-bar-fill"
+                    style="width: ${percentage}%"
+                ></div>
+            </div>
+
+            <span class="rating-bar-count">
+                ${count} (${percentage}%)
+            </span>
+        `;
+
+        ratingDistribution.appendChild(row);
+    }
+
+    // Update Product Modal Rating
+    if (total === 0) {
+        modalProductRating.textContent =
+            "★ " + product.rating + " / 5 (Demo rating)";
+    } else {
+        modalProductRating.textContent =
+            "★ " +
+            average.toFixed(1) +
+            " / 5 (" +
+            total +
+            (total === 1 ? " review)" : " reviews)");
+    }
+}
+
+// FILTER AND SORT REVIEWS
+function getFilteredReviews(productId) {
+    let filteredReviews = getProductReviews(productId);
+
+    const selectedFilter = reviewRatingFilter.value;
+
+    const selectedSort = reviewSort.value;
+
+    // Filter by Rating
+    if (selectedFilter !== "all") {
+        filteredReviews = filteredReviews.filter(
+            function (review) {
+                return review.rating === Number(selectedFilter);
+            }
+        );
+    }
+
+    // Sort Reviews
+    if (selectedSort === "newest") {
+        filteredReviews.sort(function (a, b) {
+            return new Date(b.createdAt) -
+                new Date(a.createdAt);
+        });
+    }
+
+    else if (selectedSort === "oldest") {
+        filteredReviews.sort(function (a, b) {
+            return new Date(a.createdAt) -
+                new Date(b.createdAt);
+        });
+    }
+
+    else if (selectedSort === "highest") {
+        filteredReviews.sort(function (a, b) {
+            return b.rating - a.rating;
+        });
+    }
+
+    else if (selectedSort === "lowest") {
+        filteredReviews.sort(function (a, b) {
+            return a.rating - b.rating;
+        });
+    }
+
+    return filteredReviews;
+}
+
+// RENDER REVIEWS LIST
+function renderReviewsList(productId) {
+    const filteredReviews = getFilteredReviews(productId);
+
+    const allProductReviews = getProductReviews(productId);
+
+    reviewsList.innerHTML = "";
+
+    reviewResultsCount.textContent =
+        filteredReviews.length +
+        (filteredReviews.length === 1
+            ? " review found"
+            : " reviews found");
+
+    // Empty Reviews
+    if (filteredReviews.length === 0) {
+        const emptyMessage =
+            allProductReviews.length === 0
+                ? "Be the first to review this product."
+                : "No reviews match the selected rating.";
+
+        reviewsList.innerHTML = `
+            <div class="empty-reviews">
+                <h4>No Reviews Found</h4>
+                <p>${emptyMessage}</p>
+            </div>
+        `;
+
+        return;
+    }
+
+    // Create Review Cards
+    filteredReviews.forEach(function (review) {
+        const reviewCard = document.createElement("article");
+
+        reviewCard.className = "review-card";
+
+        const initial = review.name
+            .charAt(0)
+            .toUpperCase();
+
+        reviewCard.innerHTML = `
+            <div class="review-card-header">
+
+                <div class="reviewer-info">
+
+                    <div class="reviewer-avatar">
+                        ${escapeHTML(initial)}
+                    </div>
+
+                    <div>
+
+                        <h4 class="reviewer-name">
+                            ${escapeHTML(review.name)}
+                        </h4>
+
+                        <p class="review-date">
+                            ${escapeHTML(
+                                formatDate(review.createdAt)
+                            )}
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div
+                    class="review-card-stars"
+                    aria-label="${review.rating} out of 5 stars"
+                >
+                    ${generateReviewStars(review.rating)}
+                </div>
+
+            </div>
+
+            <h4 class="review-title">
+                ${escapeHTML(review.title)}
+            </h4>
+
+            <p class="review-message">${escapeHTML(review.message)}</p>
+
+            <div class="review-footer">
+
+                <span class="local-review-label">
+                    Local Demo Review
+                </span>
+
+                <button
+                    type="button"
+                    class="delete-review-btn"
+                    data-review-id="${escapeHTML(review.id)}"
+                >
+                    Delete Review
+                </button>
+
+            </div>
+        `;
+
+        reviewsList.appendChild(reviewCard);
+    });
+}
+
+// RENDER COMPLETE PRODUCT REVIEWS
+function renderProductReviews(productId) {
+    if (!findProduct(productId)) {
+        return;
+    }
+
+    renderRatingSummary(productId);
+
+    renderReviewsList(productId);
+}
+
+// GENERATE UNIQUE REVIEW ID
+function generateReviewId() {
+    if (
+        typeof crypto !== "undefined" &&
+        typeof crypto.randomUUID === "function"
+    ) {
+        return "REVIEW-" + crypto.randomUUID();
+    }
+
+    return (
+        "REVIEW-" +
+        Date.now() +
+        "-" +
+        Math.random().toString(36).slice(2, 10)
+    );
+}
+
+// CREATE AND SUBMIT REVIEW
+reviewForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    if (!findProduct(selectedProductId)) {
+        setReviewStatus(
+            "Please select a product first.",
+            "error"
+        );
+
+        return;
+    }
+
+    if (!validateReviewForm()) {
+        setReviewStatus(
+            "Please correct the errors above.",
+            "error"
+        );
+
+        return;
+    }
+
+    const newReview = {
+        id: generateReviewId(),
+        productId: selectedProductId,
+        name: reviewName.value.trim(),
+        title: reviewTitle.value.trim(),
+        message: reviewMessage.value.trim(),
+        rating: selectedRating,
+        createdAt: new Date().toISOString()
+    };
+
+    // Add Review
+    reviews.unshift(newReview);
+
+    // Save to LocalStorage
+    if (!saveReviews()) {
+        reviews.shift();
+
+        setReviewStatus(
+            "Unable to save your review.",
+            "error"
+        );
+
+        return;
+    }
+
+    // Reset Review Form
+    resetReviewForm();
+
+    // Reset Filters
+    reviewRatingFilter.value = "all";
+    reviewSort.value = "newest";
+
+    // Update Reviews
+    renderProductReviews(selectedProductId);
+
+    // Update Product Cards
+    renderProducts();
+
+    // Success Message
+    setReviewStatus(
+        "Your review was submitted successfully!",
+        "success"
+    );
+
+    showNotification("Review submitted successfully!");
+});
+
+// REVIEW RATING FILTER EVENT
+reviewRatingFilter.addEventListener("change", function () {
+    if (selectedProductId !== null) {
+        renderReviewsList(selectedProductId);
+    }
+});
+
+// REVIEW SORT EVENT
+reviewSort.addEventListener("change", function () {
+    if (selectedProductId !== null) {
+        renderReviewsList(selectedProductId);
+    }
+});
+
+// DELETE REVIEW
+function deleteReview(reviewId) {
+    const index = reviews.findIndex(function (review) {
+        return (
+            review.id === reviewId &&
+            review.productId === selectedProductId
+        );
+    });
+
+    if (index === -1) {
+        return;
+    }
+
+    const confirmed = window.confirm(
+        "Are you sure you want to delete this review?"
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    const deletedReview = reviews[index];
+
+    // Remove Review
+    reviews.splice(index, 1);
+
+    // Update LocalStorage
+    if (!saveReviews()) {
+        reviews.splice(index, 0, deletedReview);
+
+        setReviewStatus(
+            "Unable to delete this review.",
+            "error"
+        );
+
+        return;
+    }
+
+    // Update Interface
+    renderProductReviews(selectedProductId);
+
+    renderProducts();
+
+    setReviewStatus(
+        "Review deleted successfully.",
+        "success"
+    );
+
+    showNotification("Review deleted successfully!");
+}
+
+// DELETE REVIEW EVENT DELEGATION
+reviewsList.addEventListener("click", function (event) {
+    const button = event.target.closest(
+        ".delete-review-btn"
+    );
+
+    if (!button) {
+        return;
+    }
+
+    deleteReview(button.dataset.reviewId);
+});
+
+// CLEAR VALIDATION WHILE TYPING
+reviewName.addEventListener("input", function () {
+    clearReviewFieldError(
+        reviewName,
+        "reviewNameError"
+    );
+});
+
+reviewTitle.addEventListener("input", function () {
+    clearReviewFieldError(
+        reviewTitle,
+        "reviewTitleError"
+    );
+});
+
+reviewMessage.addEventListener("input", function () {
+    clearReviewFieldError(
+        reviewMessage,
+        "reviewMessageError"
+    );
+});
 // INITIALIZE SHOPSPHERE
 displayCategories();
 renderProducts();
