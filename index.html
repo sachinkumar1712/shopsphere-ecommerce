@@ -600,6 +600,17 @@
                             id="checkoutOrderItems"
                         ></div>
 
+                        <div class="coupon-box">
+                            <label for="couponInput">Coupon code</label>
+                            <div class="coupon-controls">
+                                <input id="couponInput" type="text" placeholder="WELCOME10" maxlength="30">
+                                <button type="button" id="applyCouponBtn">Apply</button>
+                                <button type="button" id="removeCouponBtn" hidden>Remove</button>
+                            </div>
+                            <p id="couponStatus" role="status"></p>
+                            <small>Try WELCOME10 (₹500+), SHOP20 (₹2,000+) or SAVE100 (₹999+).</small>
+                        </div>
+
                         <div class="summary-divider"></div>
 
                         <div class="summary-price-row">
@@ -610,6 +621,11 @@
                         <div class="summary-price-row">
                             <span>Shipping</span>
                             <strong id="checkoutShipping">₹0</strong>
+                        </div>
+
+                        <div class="summary-price-row coupon-discount">
+                            <span>Discount</span>
+                            <strong id="checkoutDiscount">₹0</strong>
                         </div>
 
                         <div class="summary-price-row summary-total">
@@ -975,6 +991,11 @@
                         <strong id="detailsShipping"></strong>
                     </div>
 
+                        <div class="summary-price-row coupon-discount">
+                            <span>Discount</span>
+                            <strong id="detailsDiscount">₹0</strong>
+                        </div>
+
                     <div class="summary-price-row summary-total">
                         <span>Total</span>
                         <strong id="detailsTotal"></strong>
@@ -1280,7 +1301,7 @@
 
         <div class="cart-items" id="cartItems"></div>
 
-        <div class="cart-footer">
+          <div class="cart-footer">
 
             <div class="cart-subtotal">
                 <span>Subtotal</span>

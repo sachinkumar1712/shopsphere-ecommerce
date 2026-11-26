@@ -1,6 +1,4 @@
 
-// ShopSphere - Step 15: Order History & My Orders Dashboard
-
 // DOM ELEMENTS
 const menuToggle = document.getElementById("menuToggle");
 const navLinks = document.getElementById("navLinks");
@@ -1381,7 +1379,7 @@ function renderCheckoutSummary() {
 
     const subtotal = calculateSubtotal();
     const shipping = calculateShipping(subtotal);
-    const total = subtotal + shipping;
+    const total = subtotal + shipping - updateCoupon(subtotal);
 
     checkoutSubtotal.textContent = formatPrice(subtotal);
     checkoutShipping.textContent = shipping === 0
@@ -1569,7 +1567,9 @@ function createOrderRecord(paymentMethod) {
         paymentMethod: paymentMethod,
         subtotal: subtotal,
         shipping: shipping,
-        total: subtotal + shipping
+        coupon: activeCoupon,
+        discount: calculateDiscount(subtotal),
+        total: subtotal + shipping - calculateDiscount(subtotal)
     };
 }
 
@@ -1651,6 +1651,9 @@ checkoutForm.addEventListener("submit", function (event) {
 
     // Clear the cart only after saving the order.
     cart.length = 0;
+    activeCoupon = "";
+    saveToStorage(couponKey, []);
+    couponStatus.textContent = "";
 
     saveCart();
     updateCartCount();
@@ -1940,6 +1943,7 @@ function openOrderDetails(orderId) {
         ? "FREE"
         : formatPrice(order.shipping);
 
+    document.getElementById("detailsDiscount").textContent = "−" + formatPrice(order.discount || 0);
     detailsTotal.textContent = formatPrice(order.total);
 
     cancelOrderBtn.disabled = order.status === "Cancelled";
@@ -2786,6 +2790,60 @@ reviewMessage.addEventListener("input", function () {
         "reviewMessageError"
     );
 });
+// COUPON SYSTEM
+const coupons = {
+    WELCOME10: { minimum: 500, percent: 10 },
+    SHOP20: { minimum: 2000, percent: 20 },
+    SAVE100: { minimum: 999, amount: 100 }
+};
+const couponInput = document.getElementById("couponInput");
+const couponStatus = document.getElementById("couponStatus");
+const removeCouponBtn = document.getElementById("removeCouponBtn");
+const couponKey = "shopsphere_coupon";
+let activeCoupon = readStoredArray(couponKey)[0] || "";
+
+function calculateDiscount(subtotal) {
+    const coupon = Object.hasOwn(coupons, activeCoupon) ? coupons[activeCoupon] : null;
+    if (!coupon || subtotal < coupon.minimum) return 0;
+    return Math.min(subtotal, coupon.amount || Math.floor(subtotal * coupon.percent / 100));
+}
+
+function updateCoupon(subtotal) {
+    const discount = calculateDiscount(subtotal);
+    if (activeCoupon && !discount) {
+        activeCoupon = "";
+        saveToStorage(couponKey, []);
+        couponStatus.textContent = "Coupon removed: minimum order not met.";
+    }
+    couponInput.value = activeCoupon;
+    removeCouponBtn.hidden = !activeCoupon;
+    document.getElementById("checkoutDiscount").textContent = "−" + formatPrice(discount);
+    return discount;
+}
+
+document.getElementById("applyCouponBtn").addEventListener("click", function () {
+    const code = couponInput.value.trim().toUpperCase();
+    if (!Object.hasOwn(coupons, code)) {
+        couponStatus.textContent = "Invalid coupon code.";
+        return;
+    }
+    if (calculateSubtotal() < coupons[code].minimum) {
+        couponStatus.textContent = "Minimum order: " + formatPrice(coupons[code].minimum);
+        return;
+    }
+    activeCoupon = code;
+    saveToStorage(couponKey, [code]);
+    renderCheckoutSummary();
+    couponStatus.textContent = code + " applied successfully!";
+});
+
+removeCouponBtn.addEventListener("click", function () {
+    activeCoupon = "";
+    saveToStorage(couponKey, []);
+    renderCheckoutSummary();
+    couponStatus.textContent = "Coupon removed.";
+});
+
 // INITIALIZE SHOPSPHERE
 displayCategories();
 renderProducts();
@@ -2800,4 +2858,8 @@ renderCheckoutSummary();
 renderOrders();
 updateMessageCount();
 
-console.log("ShopSphere Step 15 Loaded Successfully!");
+console.log("ShopSphere Step 17 Loaded Successfully!");
+
+
+
+
