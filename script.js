@@ -1,4 +1,6 @@
 
+// ShopSphere - Step 17: Coupon Code & Discount System
+
 // DOM ELEMENTS
 const menuToggle = document.getElementById("menuToggle");
 const navLinks = document.getElementById("navLinks");
@@ -985,6 +987,10 @@ function renderProducts() {
                 </div>
 
                 <div class="product-buttons">
+                    <button type="button" class="compare-product-btn"
+                        data-id="${product.id}" aria-pressed="${comparisonIds.includes(product.id)}">
+                        ${comparisonIds.includes(product.id) ? "✓ Selected for Comparison" : "Compare Product"}
+                    </button>
                     <button
                         type="button"
                         class="view-details"
@@ -2844,6 +2850,98 @@ removeCouponBtn.addEventListener("click", function () {
     couponStatus.textContent = "Coupon removed.";
 });
 
+// PRODUCT COMPARISON
+const comparisonKey = "shopsphere_comparison";
+const comparisonIds = [...new Set(readStoredArray(comparisonKey)
+    .map(Number).filter(id => Boolean(findProduct(id))))].slice(0, 3);
+const comparisonDialog = document.getElementById("comparisonDialog");
+const comparisonContent = document.getElementById("comparisonContent");
+const comparisonCount = document.getElementById("comparisonCount");
+const openComparisonBtn = document.getElementById("openComparisonBtn");
+const clearComparisonBtn = document.getElementById("clearComparisonBtn");
+
+function updateComparison() {
+    comparisonCount.textContent = comparisonIds.length + " of 3 products selected";
+    openComparisonBtn.disabled = comparisonIds.length < 2;
+    clearComparisonBtn.disabled = comparisonIds.length === 0;
+    productsGrid.querySelectorAll(".compare-product-btn").forEach(function (button) {
+        const selected = comparisonIds.includes(Number(button.dataset.id));
+        button.setAttribute("aria-pressed", String(selected));
+        button.textContent = selected ? "✓ Selected for Comparison" : "Compare Product";
+    });
+    if (comparisonDialog.open) renderComparison();
+}
+
+function toggleComparison(id) {
+    if (!findProduct(id)) return;
+    const index = comparisonIds.indexOf(id);
+    if (index !== -1) {
+        comparisonIds.splice(index, 1);
+    } else if (comparisonIds.length < 3) {
+        comparisonIds.push(id);
+    } else {
+        showNotification("You can compare up to three products.");
+        return;
+    }
+    saveToStorage(comparisonKey, comparisonIds);
+    updateComparison();
+}
+
+function renderComparison() {
+    const selected = comparisonIds.map(findProduct);
+    if (!selected.length) {
+        comparisonContent.textContent = "No products selected.";
+        return;
+    }
+    const lowestPrice = Math.min(...selected.map(product => product.price));
+    const highestRating = Math.max(...selected.map(getDisplayRating));
+    comparisonContent.innerHTML = `<table class="comparison-table">
+        <caption>Selected products</caption>
+        <thead><tr><th scope="col">Feature</th>${selected.map(product => `
+            <th scope="col"><img src="${product.image}" alt="${escapeHTML(product.name)}">
+            ${escapeHTML(product.name)}</th>`).join("")}</tr></thead>
+        <tbody>
+            <tr><th scope="row">Category</th>${selected.map(product => `<td>${escapeHTML(product.category)}</td>`).join("")}</tr>
+            <tr><th scope="row">Price</th>${selected.map(product => `<td>${formatPrice(product.price)}${selected.length > 1 && product.price === lowestPrice ? '<strong class="comparison-best">Lowest price</strong>' : ''}</td>`).join("")}</tr>
+            <tr><th scope="row">Rating</th>${selected.map(product => `<td>★ ${getDisplayRating(product).toFixed(1)} / 5${selected.length > 1 && getDisplayRating(product) === highestRating ? '<strong class="comparison-best">Highest rating</strong>' : ''}</td>`).join("")}</tr>
+            <tr><th scope="row">Description</th>${selected.map(product => `<td>${escapeHTML(product.description)}</td>`).join("")}</tr>
+            <tr><th scope="row">Actions</th>${selected.map(product => `<td><button type="button" data-compare-cart="${product.id}">Add to Cart</button><button type="button" data-compare-remove="${product.id}">Remove</button></td>`).join("")}</tr>
+        </tbody></table>`;
+}
+
+productsGrid.addEventListener("click", function (event) {
+    const button = event.target.closest(".compare-product-btn");
+    if (button) toggleComparison(Number(button.dataset.id));
+});
+
+openComparisonBtn.addEventListener("click", function () {
+    if (comparisonIds.length < 2) return;
+    renderComparison();
+    comparisonDialog.showModal();
+});
+
+document.getElementById("closeComparisonBtn").addEventListener("click", function () {
+    comparisonDialog.close();
+});
+
+clearComparisonBtn.addEventListener("click", function () {
+    comparisonIds.length = 0;
+    saveToStorage(comparisonKey, comparisonIds);
+    updateComparison();
+});
+
+comparisonContent.addEventListener("click", function (event) {
+    const cartButton = event.target.closest("[data-compare-cart]");
+    const removeButton = event.target.closest("[data-compare-remove]");
+    if (cartButton) {
+        addToCart(Number(cartButton.dataset.compareCart));
+        cartButton.textContent = "✓ Added to Cart";
+    } else if (removeButton) {
+        toggleComparison(Number(removeButton.dataset.compareRemove));
+        document.getElementById("closeComparisonBtn").focus();
+    }
+});
+
 // INITIALIZE SHOPSPHERE
 displayCategories();
 renderProducts();
@@ -2858,8 +2956,6 @@ renderCheckoutSummary();
 renderOrders();
 updateMessageCount();
 
-console.log("ShopSphere Step 17 Loaded Successfully!");
+updateComparison();
 
-
-
-
+console.log("ShopSphere Step 18 Loaded Successfully!");

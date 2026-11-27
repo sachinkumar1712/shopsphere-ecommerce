@@ -171,6 +171,13 @@
                     <p>Discover our latest and trending products.</p>
                 </div>
 
+                <!-- Product Comparison -->
+                <div class="comparison-toolbar">
+                    <p id="comparisonCount" aria-live="polite">0 of 3 products selected</p>
+                    <button type="button" id="openComparisonBtn" disabled>Compare Products</button>
+                    <button type="button" id="clearComparisonBtn" disabled>Clear Selection</button>
+                </div>
+
                 <!-- Product Toolbar -->
                 <div class="products-toolbar">
 
@@ -1390,6 +1397,16 @@
             <p>Built with HTML, CSS, JavaScript and Bootstrap.</p>
         </div>
     </footer>
+
+    <!-- Product Comparison Dialog -->
+    <dialog id="comparisonDialog" class="comparison-dialog" aria-labelledby="comparisonTitle">
+        <div class="comparison-heading">
+            <h2 id="comparisonTitle">Compare Products</h2>
+            <button type="button" id="closeComparisonBtn" aria-label="Close comparison">✕</button>
+        </div>
+        <p>Compare prices, ratings and product details.</p>
+        <div id="comparisonContent" class="comparison-content" aria-live="polite"></div>
+    </dialog>
 
     <!-- JavaScript -->
     <script src="script.js"></script>

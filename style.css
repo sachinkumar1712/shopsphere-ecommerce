@@ -2649,7 +2649,7 @@ button {
 
 }
 
-/* COUPON SYSTEM */
+/* STEP 17: COUPON SYSTEM */
 .coupon-box { margin: 20px 0; padding: 16px; border: 1px dashed #93c5fd; border-radius: 10px; background: #eff6ff; }
 .coupon-box label { display: block; font-weight: 700; margin-bottom: 8px; }
 .coupon-controls { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -2659,3 +2659,58 @@ button {
 #couponStatus { margin: 8px 0; font-size: 14px; color: #334155; }
 .coupon-box small { color: #475569; }
 .coupon-discount strong { color: #15803d; }
+
+/* PRODUCT COMPARISON */
+.comparison-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+.comparison-toolbar p { margin: 0; margin-right: auto; font-weight: 600; }
+.comparison-toolbar button, .compare-product-btn, .comparison-table button {
+    padding: 10px 14px;
+    border: 1px solid #2563eb;
+    border-radius: 8px;
+    background: white;
+    color: #2563eb;
+    font-weight: 600;
+}
+#openComparisonBtn, .compare-product-btn[aria-pressed="true"] {
+    background: #2563eb;
+    color: white;
+}
+.comparison-toolbar button:disabled { opacity: .45; cursor: not-allowed; }
+.comparison-dialog {
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: min(1000px, 94vw);
+    max-height: 90vh;
+    padding: 24px;
+    border: 0;
+    border-radius: 16px;
+    color: #1e293b;
+    background: white;
+    overflow: auto;
+}
+.comparison-dialog::backdrop { background: rgba(15, 23, 42, .75); }
+.comparison-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.comparison-heading button { border: 0; border-radius: 8px; padding: 8px 12px; background: #f1f5f9; }
+.comparison-content { overflow-x: auto; }
+.comparison-table { width: 100%; border-collapse: collapse; }
+.comparison-table th, .comparison-table td { min-width: 150px; padding: 14px; border: 1px solid #e2e8f0; vertical-align: top; }
+.comparison-table th:first-child { min-width: 100px; background: #f8fafc; }
+.comparison-table img { display: block; width: 100%; max-width: 180px; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+.comparison-table button { display: block; width: 100%; margin-bottom: 8px; }
+.comparison-best { display: block; color: #15803d; font-size: 13px; margin-top: 6px; }
+@media (max-width: 600px) {
+    .comparison-toolbar p { width: 100%; }
+    .comparison-dialog { padding: 14px; }
+    .comparison-heading h2 { font-size: 22px; }
+}
