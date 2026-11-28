@@ -1,6 +1,3 @@
-
-// ShopSphere - Step 17: Coupon Code & Discount System
-
 // DOM ELEMENTS
 const menuToggle = document.getElementById("menuToggle");
 const navLinks = document.getElementById("navLinks");
@@ -571,7 +568,7 @@ function renderCart() {
             element.className = "cart-item";
 
             element.innerHTML = `
-                <img
+                <img loading="lazy" decoding="async"
                     src="${item.image}"
                     alt="${item.name}"
                     class="cart-item-image"
@@ -676,7 +673,7 @@ function renderWishlist() {
         element.className = "wishlist-item";
 
         element.innerHTML = `
-            <img
+            <img loading="lazy" decoding="async"
                 src="${product.image}"
                 alt="${product.name}"
                 class="wishlist-item-image"
@@ -855,7 +852,7 @@ function displayCategories() {
         );
 
         card.innerHTML = `
-            <img
+            <img loading="lazy" decoding="async"
                 src="${category.image}"
                 alt=""
                 loading="lazy"
@@ -948,7 +945,7 @@ function renderProducts() {
 
         card.innerHTML = `
             <div class="product-image">
-                <img
+                <img loading="lazy" decoding="async"
                     src="${product.image}"
                     alt="${product.name}"
                     loading="lazy"
@@ -1367,7 +1364,7 @@ function renderCheckoutSummary() {
             element.className = "checkout-order-item";
 
             element.innerHTML = `
-                <img src="${item.image}" alt="${item.name}">
+                <img loading="lazy" decoding="async" src="${item.image}" alt="${item.name}">
 
                 <div class="checkout-order-item-details">
                     <h4>${item.name}</h4>
@@ -1801,7 +1798,7 @@ function renderOrders() {
             const image = product ? product.image : "";
 
             return `
-                <img
+                <img loading="lazy" decoding="async"
                     src="${image}"
                     alt="${escapeHTML(item.name)}"
                     class="order-product-thumbnail"
@@ -1924,7 +1921,7 @@ function openOrderDetails(orderId) {
         element.className = "order-detail-item";
 
         element.innerHTML = `
-            <img
+            <img loading="lazy" decoding="async"
                 src="${image}"
                 alt="${escapeHTML(item.name)}"
             >
@@ -2898,7 +2895,7 @@ function renderComparison() {
     comparisonContent.innerHTML = `<table class="comparison-table">
         <caption>Selected products</caption>
         <thead><tr><th scope="col">Feature</th>${selected.map(product => `
-            <th scope="col"><img src="${product.image}" alt="${escapeHTML(product.name)}">
+            <th scope="col"><img loading="lazy" decoding="async" src="${product.image}" alt="${escapeHTML(product.name)}">
             ${escapeHTML(product.name)}</th>`).join("")}</tr></thead>
         <tbody>
             <tr><th scope="row">Category</th>${selected.map(product => `<td>${escapeHTML(product.category)}</td>`).join("")}</tr>
@@ -2958,4 +2955,45 @@ updateMessageCount();
 
 updateComparison();
 
-console.log("ShopSphere Step 18 Loaded Successfully!");
+// STEP 19: THEME AND NAVIGATION
+const themeToggle = document.getElementById("themeToggle");
+const backToTop = document.getElementById("backToTop");
+const themeKey = "shopsphere_theme";
+
+function applyTheme(theme) {
+    const dark = theme === "dark";
+    document.documentElement.dataset.theme = dark ? "dark" : "light";
+    themeToggle.textContent = dark ? "☀" : "☾";
+    themeToggle.setAttribute("aria-pressed", String(dark));
+}
+
+let savedTheme = null;
+try {
+    savedTheme = localStorage.getItem(themeKey);
+} catch (error) {
+    console.warn("Theme preference unavailable.");
+}
+applyTheme(savedTheme === "dark" || savedTheme === "light" ? savedTheme :
+    (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
+
+themeToggle.addEventListener("click", function () {
+    const theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    applyTheme(theme);
+    try {
+        localStorage.setItem(themeKey, theme);
+    } catch (error) {
+        showNotification("Theme changed, but preference could not be saved.");
+    }
+});
+
+function updateBackToTop() {
+    backToTop.hidden = window.scrollY < 500;
+}
+window.addEventListener("scroll", updateBackToTop, { passive: true });
+updateBackToTop();
+backToTop.addEventListener("click", function () {
+    document.getElementById("home").focus({ preventScroll: true });
+    window.scrollTo({ top: 0, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" });
+});
+
+console.log("ShopSphere Step 19 Loaded Successfully!");
